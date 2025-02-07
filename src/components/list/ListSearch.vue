@@ -11,7 +11,7 @@
         label-position="left"
         label-suffix=":"
       >
-        <ListSearchItem />
+        <ListSearchItem v-for="(searchItem, index) in props.searchItems" :key="index" :search-item="searchItem"/>
       </el-form>
     </div>
     <div class="form-op-container">
@@ -41,7 +41,7 @@
 import { ref, watch, defineProps, onMounted, computed } from 'vue';
 import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
   const props = defineProps({
-    searchTerms: {
+    searchItems: {
       type: Array,
       required: true
     }
@@ -57,7 +57,7 @@ import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
     transition: "max-height 0.2s ease",
   }));
 
-  watch(() => props.searchTerms, (newVal, oldVal) => {
+  watch(() => props.searchItems, (newVal, oldVal) => {
     console.log('searchTerms changed from', oldVal, 'to', newVal);
   });
 
