@@ -1,17 +1,15 @@
 <template>
-    <SeInput v-if="props.searchItem.type == ITEM_TYPE.INPUT" label="测试" placeholder="请输入测试内容"/>
-    <SeSelect v-else-if="props.searchItem.type === ITEM_TYPE.SELECT" label="测试下拉框" placeholder="请输入测试下拉选择内容" :selectItems="seSelectVal"/>
+    <SeInput v-if="props.searchItem.type == ITEM_TYPE.INPUT" 
+    :label="props.searchItem.label" :placeholder="props.searchItem.placeholder" 
+    :value="props.searchItem.value"
+    @updateValue="updateValue"/>
+    <SeSelect v-else-if="props.searchItem.type === ITEM_TYPE.SELECT" :label="props.searchItem.label" :placeholder="props.searchItem.placeholder" :selectItems="props.searchItem.selectItems"/>
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from 'vue';
+import { defineProps, watch, defineEmits } from 'vue';
 import SeInput from '@/components/list/search/SeInput.vue';
 import SeSelect from '@/components/list/search/SeSelect.vue';
-
-const seSelectVal = ref([{
-    key: 1,
-    value: "测试选项"
-}]);
 
 const props = defineProps({
     searchItem: {
@@ -27,7 +25,13 @@ const ITEM_TYPE = {
 
 watch(() => props.searchItem, (newVal, oldVal) => {
     console.log('searchTerms changed from', oldVal, 'to', newVal);
-  });
+});
+
+const emits = defineEmits(['updateValue']);
+
+function updateValue(value) {
+    emits('updateValue', {code: props.searchItem.code, value});
+}
 
 </script>
 

@@ -4,14 +4,14 @@
       :style="contentStyle"
     >
     <el-form
-        ref="queryForm"
         size="small"
         :inline="true"
         label-width="92px"
         label-position="left"
         label-suffix=":"
       >
-        <ListSearchItem v-for="(searchItem, index) in props.searchItems" :key="index" :search-item="searchItem"/>
+        <ListSearchItem v-for="(searchItem, index) in props.searchItems" :key="index" 
+        :search-item="searchItem" @update-value="updateSearchForm"/>
       </el-form>
     </div>
     <div class="form-op-container">
@@ -38,8 +38,20 @@
     </div>
 </template>
 <script setup>
-import { ref, watch, defineProps, onMounted, computed } from 'vue';
+import { ref, defineProps, onMounted, computed, reactive } from 'vue';
 import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
+
+  const searchForm = reactive({
+      domains: []
+  });
+
+  const addDomain = (searchItem) => {
+    searchForm.domains.push({
+      key: searchItem.code,
+      value: searchItem.value,
+    })
+  }
+
   const props = defineProps({
     searchItems: {
       type: Array,
@@ -49,7 +61,7 @@ import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
 
   const isCollapsed = ref(true);
   const maxHeight = ref("200px");
-  const msg = ref("200px");
+
 
 
   const contentStyle = computed(() => ({
@@ -57,17 +69,30 @@ import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
     transition: "max-height 0.2s ease",
   }));
 
-  watch(() => props.searchItems, (newVal, oldVal) => {
-    console.log('searchTerms changed from', oldVal, 'to', newVal);
-  });
+  // watch(() => props.searchItems, (newVal) => {
+  //   addDomain(newVal)
+  // });
+
+  function updateSearchForm(value) {
+    searchForm.domains.forEach((domain) => {
+      if (domain.key === value.code) {
+        domain.value = value.value
+      }
+    })
+  }
 
   onMounted(() => {
-    console.log(`the component is now mounted.`)
-    msg.value = "aaaaa"
+    props.searchItems.forEach((searchItem) => {
+      searchItem.value = reactive(searchItem.value)
+      addDomain(searchItem)
+    });
   })
 
   const handleQuery = () => {
     // 查询逻辑
+    searchForm.domains.forEach((domain) => {
+      console.error(domain.key, domain.value)
+    })
   };
 
   const resetQuery = () => {
