@@ -6,7 +6,7 @@
     </el-form-item>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, defineEmits, ref, watch } from 'vue';
 
 const props = defineProps({

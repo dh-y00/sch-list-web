@@ -1,11 +1,8 @@
 <template>
-  <!-- <nav>
-    <router-link to="/">List</router-link>
-  </nav> -->
   <router-view/>
 </template>
 
-<style lang="less">
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

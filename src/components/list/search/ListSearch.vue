@@ -37,15 +37,15 @@
       </div>
     </div>
 </template>
-<script setup>
-import { ref, defineProps, onMounted, computed, reactive } from 'vue';
+<script setup lang="ts">
+import { ref, defineProps, onMounted, computed, reactive, PropType } from 'vue';
 import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
-
+import { SearchItemParams } from '@/components/list/search/model/SearchModel';
   const searchForm = reactive({
-      domains: []
+      domains: Array<{ key: string; value?: string }>(),
   });
 
-  const addDomain = (searchItem) => {
+  const addDomain = (searchItem: SearchItemParams) => {
     searchForm.domains.push({
       key: searchItem.code,
       value: searchItem.value,
@@ -54,14 +54,13 @@ import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
 
   const props = defineProps({
     searchItems: {
-      type: Array,
+      type: Array as PropType<SearchItemParams[]>,
       required: true
     }
   });
 
-  const isCollapsed = ref(true);
+  const isCollapsed = ref<boolean>(true);
   const maxHeight = ref("200px");
-
 
 
   const contentStyle = computed(() => ({
@@ -69,11 +68,15 @@ import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
     transition: "max-height 0.2s ease",
   }));
 
+  const buttonText = computed(() => {
+    return isCollapsed.value ? '展开' : '收起'
+  });
+
   // watch(() => props.searchItems, (newVal) => {
   //   addDomain(newVal)
   // });
-
-  function updateSearchForm(value) {
+  // eslint-disable-next-line
+  function updateSearchForm(value: any) {
     searchForm.domains.forEach((domain) => {
       if (domain.key === value.code) {
         domain.value = value.value
@@ -82,11 +85,17 @@ import ListSearchItem from '@/components/list/search/ListSearchItem.vue';
   }
 
   onMounted(() => {
-    props.searchItems.forEach((searchItem) => {
-      searchItem.value = reactive(searchItem.value)
+    props.searchItems.forEach((searchItem: SearchItemParams) => {
       addDomain(searchItem)
     });
   })
+
+  /**
+   * 切换展开/收起
+   */
+  const toggle = () => {
+    isCollapsed.value = !isCollapsed.value;
+  };
 
   const handleQuery = () => {
     // 查询逻辑

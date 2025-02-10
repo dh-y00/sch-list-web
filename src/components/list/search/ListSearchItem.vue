@@ -1,27 +1,26 @@
 <template>
-    <SeInput v-if="props.searchItem.type == ITEM_TYPE.INPUT" 
+    <SeInput v-if="props.searchItem?.type == SearchTypeEnum.INPUT.valueOf()" 
     :label="props.searchItem.label" :placeholder="props.searchItem.placeholder" 
     :value="props.searchItem.value"
     @updateValue="updateValue"/>
-    <SeSelect v-else-if="props.searchItem.type === ITEM_TYPE.SELECT" :label="props.searchItem.label" :placeholder="props.searchItem.placeholder" :selectItems="props.searchItem.selectItems"/>
+    <SeSelect v-else-if="props.searchItem?.type === SearchTypeEnum.SELECT.valueOf()" 
+    :label="props.searchItem.label" :placeholder="props.searchItem.placeholder" 
+    :selectItems="props.searchItem.selectItems"/>
 </template>
 
-<script setup>
-import { defineProps, watch, defineEmits } from 'vue';
+<script setup lang="ts">
+import { defineProps, watch, defineEmits, PropType } from 'vue';
 import SeInput from '@/components/list/search/SeInput.vue';
 import SeSelect from '@/components/list/search/SeSelect.vue';
+import { SearchItemParams } from '@/components/list/search/model/SearchModel';
+import {SearchTypeEnum} from '@/constant/SearchConstant'
 
 const props = defineProps({
     searchItem: {
-        type: Object,
+        type: Object as PropType<SearchItemParams>,
         required: false
     }
 });
-
-const ITEM_TYPE = {
-    INPUT: 1,
-    SELECT: 2
-};
 
 watch(() => props.searchItem, (newVal, oldVal) => {
     console.log('searchTerms changed from', oldVal, 'to', newVal);
@@ -29,8 +28,9 @@ watch(() => props.searchItem, (newVal, oldVal) => {
 
 const emits = defineEmits(['updateValue']);
 
-function updateValue(value) {
-    emits('updateValue', {code: props.searchItem.code, value});
+// eslint-disable-next-line
+function updateValue(value: any) {
+    emits('updateValue', {code: props.searchItem?.code, value});
 }
 
 </script>
