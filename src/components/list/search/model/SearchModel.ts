@@ -48,4 +48,11 @@ interface SelectItem {
     children?: SelectItem
 }
 
-export { SearchItemParams, SelectItem }
+
+/**
+ * 搜索的参数
+ */
+// eslint-disable-next-line
+type SearchParamsType = { [key: string]: any }
+
+export { SearchItemParams, SelectItem, SearchParamsType}

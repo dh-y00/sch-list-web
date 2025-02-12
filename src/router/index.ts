@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import ListView from '@/views/ListView.vue'
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path: '/:listId',
     name: 'list',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
