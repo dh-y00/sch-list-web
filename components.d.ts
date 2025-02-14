@@ -13,6 +13,7 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ListFoot: typeof import('./src/components/list/foot/ListFoot.vue')['default']
@@ -23,5 +24,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SeInput: typeof import('./src/components/list/search/SeInput.vue')['default']
     SeSelect: typeof import('./src/components/list/search/SeSelect.vue')['default']
+    SvgIconView: typeof import('./src/components/SvgIcon/SvgIconView.vue')['default']
   }
 }
